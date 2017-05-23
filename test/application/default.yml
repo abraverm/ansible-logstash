@@ -1,0 +1,6 @@
+---
+- name: "Default"
+  hosts: all
+  become: true
+  roles:
+    - ansible-logstash

@@ -1,0 +1,28 @@
+---
+driver:
+  name: docker
+  socket: unix:///var/run/docker.sock
+  privileged: true
+  use_sudo: false
+  hostname: "simple"
+
+provisioner:
+  name: ansible_push
+  chef_bootstrap_url: nil
+  ansible_config: "test/ansible.cfg"
+  idempotency_test: true
+  diff: true
+
+platforms:
+  - name: fedora-25
+    driver:
+      provision_command:
+        - dnf install -y python
+
+verifier:
+  name: inspec
+
+suites:
+  - name: default
+    provisioner:
+      playbook: "test/application/default.yml"

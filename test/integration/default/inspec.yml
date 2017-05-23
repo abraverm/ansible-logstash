@@ -1,0 +1,9 @@
+---
+name: ansible-logstash
+title: Ansible Logstash
+maintainer: Alexander Braverman Masis <abraverm@redhat.com>
+summary: Ansible role for deployment and managment of Logstash
+version: 0.0.1
+supports:
+  - os-family: fedora
+    release: 25

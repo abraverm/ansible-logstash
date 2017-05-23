@@ -1,0 +1,9 @@
+galaxy_info:
+  author: Alexander Braverman Masis
+  description: Deployment and configuration management of Logstash nodes
+  license: license GPLv3
+  min_ansible_version: 2.0
+  galaxy_tags:
+    - log
+    - logstash
+dependencies: []
