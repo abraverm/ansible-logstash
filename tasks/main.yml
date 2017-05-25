@@ -1,2 +1,12 @@
 ---
-# tasks file for logstash
+- name: Install Logstash
+  include: "install/{{ ansible_distribution }}.yml"
+
+- name: Install Logstash plugins
+  logstash_plugin:
+    state: present
+    name: "{ item }"
+  with_items: "{{ logstash_plugins }}"
+
+- name: Configure Logstash
+  include: "configure.yml"

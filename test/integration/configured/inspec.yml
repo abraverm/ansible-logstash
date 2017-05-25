@@ -1,8 +1,8 @@
 ---
-name: ansible-logstash-installation
-title: Ansible Logstash installation
+name: ansible-logstash-configure
+title: Ansible Logstash configuration
 maintainer: Alexander Braverman Masis <abraverm@redhat.com>
-summary: Ansible role for deployment of Logstash
+summary: Ansible role for configuration of Logstash
 version: 0.0.1
 supports:
   - os-family: fedora

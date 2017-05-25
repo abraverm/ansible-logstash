@@ -1,0 +1,14 @@
+---
+- name: "Configured"
+  hosts: all
+  become: true
+  vars:
+    logstash_template: 'template' # used in templates
+    logstash_cfg_files:
+      - cfg_files/static.conf
+    logstash_cfg_files_regex: 'cfg_files_regex/*'
+    logstash_cfg_templates:
+      - cfg_templates/template.conf
+    logstash_cfg_templates_regex: 'cfg_templates_regex/*'
+  roles:
+    - ansible-logstash

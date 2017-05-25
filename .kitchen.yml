@@ -16,8 +16,13 @@ provisioner:
 platforms:
   - name: fedora-25
     driver:
+      run_command: /start
+      run_options: --tty -e 'container=docker'
       provision_command:
-        - dnf install -y python
+        - dnf install -y python systemd
+      volume:
+        - $PWD/test/init_scripts/fedora:/start:ro
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
 verifier:
   name: inspec
@@ -25,4 +30,8 @@ verifier:
 suites:
   - name: default
     provisioner:
-      playbook: "test/application/default.yml"
+      playbook: "test/integration/default/ansible/playbook.yml"
+
+  - name: configured
+    provisioner:
+      playbook: "test/integration/configured/ansible/playbook.yml"

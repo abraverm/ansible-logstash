@@ -1,0 +1,37 @@
+---
+- name: Clean configuration directory
+  file:
+    path: "{{ logstash_cfg_dir }}"
+    state: absent
+  when: logstash_clean_cfg_dir
+
+- name: Ensure configuration directory exists
+  file:
+    path: "{{ logstash_cfg_dir }}"
+    state: directory
+    owner: logstash
+    group: logstash
+
+- name: Add static configuration files
+  copy:
+      src: "{{ item }}"
+      dest: "{{ logstash_cfg_dir }}"
+  with_items: "{{ logstash_cfg_files }}"
+
+- name: Add configuration from templates
+  template:
+      src: "{{ item }}"
+      dest: "{{ logstash_cfg_dir }}"
+  with_items: "{{ logstash_cfg_templates }}"
+
+- name: Add static configuration files using regex
+  copy:
+      src: "{{ item }}"
+      dest: "{{ logstash_cfg_dir }}"
+  with_fileglob: "{{ logstash_cfg_files_regex }}"
+
+- name: Add configuration from templates using regex
+  template:
+      src: "{{ item }}"
+      dest: "{{ logstash_cfg_dir }}"
+  with_fileglob: "{{ logstash_cfg_templates_regex }}"

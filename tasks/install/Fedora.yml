@@ -1,0 +1,32 @@
+---
+- name: Add Elasticsearch GPG key
+  rpm_key:
+    key: "{{ elasticsearch_gpg_key }}"
+    state: present
+
+- name: Elasticsearch repository
+  yum_repository:
+    name: "logstash-{{ logstash_major_version }}.x"
+    description: "Elastic repository for {{ logstash_major_version }}.x packages"
+    baseurl: "https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/yum"
+    file: logstash
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Install requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ logstash_requirements }}"
+
+- name: Install Logstash
+  package:
+    name: logstash
+    state: present
+
+- name: Logstash service
+  systemd:
+    name: logstash
+    enabled: true
+    state: started

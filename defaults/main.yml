@@ -1,2 +1,12 @@
 ---
-# defaults file for logstash
+elasticsearch_gpg_key: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+logstash_major_version: 5
+logstash_requirements:
+  - java
+logstash_plugins: []
+logstash_clean_cfg_dir: false
+logstash_cfg_dir: "/etc/logstash/conf.d"
+logstash_cfg_files: []
+logstash_cfg_files_regex: ''
+logstash_cfg_templates: []
+logstash_cfg_templates_regex: ''
