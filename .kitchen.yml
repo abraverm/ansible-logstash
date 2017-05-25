@@ -23,6 +23,7 @@ platforms:
       volume:
         - $PWD/test/init_scripts/fedora:/start:ro
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - $PWD/logs:/var/log/logstash:rw
 
 verifier:
   name: inspec

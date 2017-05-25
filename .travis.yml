@@ -8,13 +8,9 @@ python: "2.7"
 
 env:
   - ANSIBLE_VERSION=latest
-  - ANSIBLE_VERSION=2.2.2.0
+  - ANSIBLE_VERSION=2.3.0.0
 
 cache: pip
-
-branches:
-  only:
-    - master
 
 before_install:
   # Make sure everything's up to date.
@@ -32,8 +28,6 @@ install:
 
 script:
   - export ANSIBLE_CONFIG="test/ansible.cfg"
-  # Check the role/playbook's syntax.
-  - ansible-playbook -i tests/inventory test/application/*.yml --syntax-check
   - ansible --version
   - docker version
   - sudo locale-gen en_US.UTF-8
@@ -41,8 +35,15 @@ script:
   - LANG=en_US.UTF-8 bundle exec kitchen --version
   - LANG=en_US.UTF-8 bundle exec kitchen test -d always
 
+after_failure:
+  - ls -la logs/
+  - cat logs/*
+
 after_success:
   - echo "Success"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  irc:
+    channels:
+      - "chat.freenode.net#abraverm-ansible-logstash"

@@ -12,3 +12,12 @@
     logstash_cfg_templates_regex: 'cfg_templates_regex/*'
   roles:
     - ansible-logstash
+  tasks:
+    - name: Wait for logs to be created
+      wait_for:
+        path: "/tmp/{{ item }}.log"
+      with_items:
+        - static
+        - static_regex
+        - template
+        - template_regex

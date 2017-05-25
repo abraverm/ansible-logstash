@@ -5,4 +5,3 @@ gem 'inspec'
 gem 'kitchen-docker'
 gem 'kitchen-inspec'
 gem 'kitchen-ansiblepush'
-
