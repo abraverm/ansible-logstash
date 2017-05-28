@@ -19,7 +19,7 @@ platforms:
       run_command: /start
       run_options: --tty -e 'container=docker'
       provision_command:
-        - dnf install -y python systemd
+        - dnf install -y python systemd python2-dnf
       volume:
         - $PWD/test/init_scripts/fedora:/start:ro
         - /sys/fs/cgroup:/sys/fs/cgroup:ro

@@ -25,8 +25,16 @@
     name: logstash
     state: present
 
+# Due to issue https://github.com/ansible/ansible-modules-core/issues/915
+# And the need to support older versions of Ansible
+
 - name: Logstash service
-  systemd:
-    name: logstash
-    enabled: true
-    state: started
+  command: systemctl enable logstash
+  args:
+    creates: /etc/systemd/system/multi-user.target.wants/logstash.service
+
+- name: Start Logstash service
+  command: systemctl start logstash
+  register: logstash_start
+  changed_when: "logstash_start.rc != 0"
+

@@ -9,6 +9,8 @@ python: "2.7"
 env:
   - ANSIBLE_VERSION=latest
   - ANSIBLE_VERSION=2.3.0.0
+  - ANSIBLE_VERSION=2.2.3.0
+  - ANSIBLE_VERSION=2.1.5.0
 
 cache: pip
 
