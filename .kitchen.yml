@@ -24,6 +24,27 @@ platforms:
         - $PWD/test/init_scripts/fedora:/start:ro
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
         - $PWD/logs:/var/log/logstash:rw
+  - name: centos-7.3.1611
+    driver:
+      run_command: /usr/sbin/init
+      run_options: --tty -e 'container=docker'
+      provision_command:
+        - yum install -y python systemd python2-dnf initscripts
+        - cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done
+        - rm -f /lib/systemd/system/multi-user.target.wants/*;
+        - rm -f /etc/systemd/system/*.wants/*;
+        - rm -f /lib/systemd/system/local-fs.target.wants/*;
+        - rm -f /lib/systemd/system/sockets.target.wants/*udev*;
+        - rm -f /lib/systemd/system/sockets.target.wants/*initctl*;
+        - rm -f /lib/systemd/system/basic.target.wants/*;
+        - rm -f /lib/systemd/system/anaconda.target.wants/*;
+        - sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config
+        - systemctl enable sshd
+      volume:
+        - $PWD/test/init_scripts/centos:/start:ro
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        - $PWD/logs:/var/log/logstash:rw
+        - /tmp/$(mktemp -d):/run
 
 verifier:
   name: inspec

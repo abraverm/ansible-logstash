@@ -17,21 +17,34 @@
       src: "{{ item }}"
       dest: "{{ logstash_cfg_dir }}"
   with_items: "{{ logstash_cfg_files }}"
+  register: static_cfg
 
 - name: Add configuration from templates
   template:
       src: "{{ item }}"
       dest: "{{ logstash_cfg_dir }}"
   with_items: "{{ logstash_cfg_templates }}"
+  register: template_cfg
 
 - name: Add static configuration files using regex
   copy:
       src: "{{ item }}"
       dest: "{{ logstash_cfg_dir }}"
   with_fileglob: "{{ logstash_cfg_files_regex }}"
+  register: static_regex_cfg
 
 - name: Add configuration from templates using regex
   template:
       src: "{{ item }}"
       dest: "{{ logstash_cfg_dir }}"
   with_fileglob: "{{ logstash_cfg_templates_regex }}"
+  register: template_regex_cfg
+
+- name: Restart Logstash service
+  command: systemctl restart logstash
+  when:
+    - static_cfg.changed
+    - template_cfg.changed
+    - static_regex_cfg.changed
+    - template_regex_cfg.changed
+
