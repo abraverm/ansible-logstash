@@ -1,0 +1,46 @@
+---
+- name: Add Elasticsearch GPG key
+  rpm_key:
+    key: "{{ elasticsearch_gpg_key }}"
+    state: present
+
+- name: Elasticsearch repository
+  yum_repository:
+    name: "logstash-{{ logstash_major_version }}.x"
+    description: "Elastic repository for {{ logstash_major_version }}.x packages"
+    baseurl: "https://artifacts.elastic.co/packages/{{ logstash_major_version }}.x/yum"
+    file: logstash
+    enabled: true
+    gpgcheck: true
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Install requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ logstash_requirements }}"
+
+- name: Install Logstash
+  package:
+    name: logstash
+    state: present
+
+- name: Change ownership
+  file:
+    path: /etc/logstash/conf.d
+    owner: logstash
+    state: directory
+
+# Due to issue https://github.com/ansible/ansible-modules-core/issues/915
+# And the need to support older versions of Ansible
+
+- name: Logstash service
+  command: systemctl enable logstash
+  args:
+    creates: /etc/systemd/system/multi-user.target.wants/logstash.service
+
+- name: Start Logstash service
+  command: systemctl start logstash
+  register: logstash_start
+  changed_when: "logstash_start.rc != 0"
+

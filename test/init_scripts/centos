@@ -1,0 +1,6 @@
+#!/bin/bash
+exec /usr/sbin/init &
+exec /lib/systemd/systemd --system &
+/usr/sbin/sshd -D -o UseDNS=no -o UsePAM=no \
+-o PasswordAuthentication=yes -o UsePrivilegeSeparation=no \
+-o PidFile=/tmp/sshd.pid

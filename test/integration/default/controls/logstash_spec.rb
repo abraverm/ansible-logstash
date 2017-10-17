@@ -1,7 +1,7 @@
 control 'logstash-0.1' do
   impact 1.0
   title 'ElasticSearch GPG key is imported'
-  if os[:name] == 'fedora'
+  if ['fedora', 'centos'].include? os[:name]
     describe command("rpm -q --queryformat '%{version}\n' gpg-pubkey") do
      its('stdout') { should match /d88e42b4/ }
     end
@@ -11,7 +11,7 @@ end
 control 'logstash-0.2' do
   impact 1.0
   title 'Logstash repository is present'
-  if os[:name] == 'fedora'
+  if ['fedora', 'centos'].include? os[:name]
     describe yum.repo('logstash-5.x') do
       it { should exist }
       it { should be_enabled }
@@ -24,7 +24,7 @@ end
 control 'logstash-0.3' do
   impact 1.0
   title 'Logstash requirements are installed'
-  if os[:name] == 'fedora'
+  if ['fedora', 'centos'].include? os[:name]
     %w(java-1.8.0-openjdk).each do |required|
       describe package(required) do
         it { should be_installed }
