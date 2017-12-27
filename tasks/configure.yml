@@ -42,9 +42,6 @@
 
 - name: Restart Logstash service
   command: systemctl restart logstash
-  when:
-    - static_cfg.changed
-    - template_cfg.changed
-    - static_regex_cfg.changed
-    - template_regex_cfg.changed
+  when: static_cfg.changed or template_cfg.changed or static_regex_cfg.changed 
+   or template_regex_cfg.changed
 
